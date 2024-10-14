@@ -14,13 +14,13 @@ namespace PortfolioWebsite.Models
         public int PhotoId { get; set; }
 
         /// <summary>
-        /// Description of a photo
+        /// Description of the contents of a photo / alt text
         /// </summary>
         [Required]
         public string PhotoDescription { get; set; }
 
         /// <summary>
-        /// Name of a photo
+        /// Name of a photo / actual file name
         /// </summary>
         [Required]
         public string PhotoName { get; set; }
