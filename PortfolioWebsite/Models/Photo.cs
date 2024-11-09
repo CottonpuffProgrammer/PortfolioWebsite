@@ -14,17 +14,12 @@ namespace PortfolioWebsite.Models
         public int PhotoId { get; set; }
 
         /// <summary>
-        /// Description of the contents of a photo / alt text
+        /// The path that refers to the photo contained in 
+        /// the wwwroot folder (storage of photos will be 
+        /// changed later on)
         /// </summary>
         [Required]
-        public string PhotoDescription { get; set; }
+        public string PhotoPath { get; set; }
 
-        /// <summary>
-        /// Name of a photo / actual file name
-        /// </summary>
-        [Required]
-        public string PhotoName { get; set; }
-
-        // To Do: Add a way to actually contain a photo to display
     }
 }
