@@ -1,7 +1,16 @@
 ﻿@model PortfolioWebsite.Models.Photo
 
 @{
-    ViewData["Title"] = "Upload a Photo";
+    ViewData["Title"] = "Upload";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Work in progress!</h1>
+<h1>Upload Photo (Currently a Work in Progress, No User Validation)</h1>
+
+<form method="post" enctype="multipart/form-data" asp-controller="Photo" asp-action="Upload">
+    <span>Upload an Image: </span>
+    <input type="file" name="postedFiles" multiple />
+    <input type="submit" value="Upload" />
+    <br />
+    <span style="color:green">@Html.Raw(ViewBag.Message)</span>
+</form>
