@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PortfolioWebsite.Areas.Identity.Data;
+using PortfolioWebsite.Models;
 
 namespace Photolio.Data;
 
@@ -19,4 +20,6 @@ public class ApplicationDbContext : IdentityDbContext<PhotolioUser>
         // For example, you can rename the ASP.NET Identity table names and more.
         // Add your customizations after calling base.OnModelCreating(builder);
     }
+
+    public DbSet<Photo> Photos { get; set; }
 }
