@@ -5,14 +5,32 @@
 }
 
 <head>
-    <h1>Work in progress!</h1>
+    <h1>Images shown are not user based yet! Implementation for that is coming soon.</h1>
 </head>
 <body>
     <div>
         <!-- For each photo path stored under the currently 
             logged in user, create a new <img> to display 
-            each photo path. -->
+            each photo path. For now the following code will 
+            display all photos stored in the wwwroot folder 
+            until user-based selection has been implemented. -->
+        @{
+            // Gets all files from the images folder
+            string[] fileEntries = Directory.GetFiles("wwwroot/images/");
+            
+            // Does the following actions for each image/file in the folder
+            foreach (string fileName in fileEntries)
+            {
+                // Removes the "wwwroot" at the start of each fileName so 
+                // the image can be properly linked in "src", could be 
+                // a bit more efficient but works for now
+                string correctName;
+                correctName = fileName.Remove(0, 7);
 
-
+                // Creates an <img> tag to display an image, might be changed 
+                // later to create an organized look without distorting the images
+                <img src="@correctName" alt="" width="200" height="200">
+            }
+        }
     </div>
 </body>
