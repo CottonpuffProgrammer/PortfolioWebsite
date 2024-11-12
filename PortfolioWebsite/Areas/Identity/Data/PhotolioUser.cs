@@ -14,6 +14,6 @@ public class PhotolioUser : IdentityUser
     /// <summary>
     /// Keeps track of all photos uploaded by the user
     /// </summary>
-    public List<Photo>? UploadedPhotos { get; set; }
+    public List<Photo> UploadedPhotos { get; set; } = new List<Photo>();
 }
 
