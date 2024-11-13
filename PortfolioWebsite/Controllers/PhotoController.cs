@@ -7,6 +7,7 @@ using Photolio.Data;
 using PortfolioWebsite.Models;
 using Microsoft.AspNetCore.Identity;
 using PortfolioWebsite.Areas.Identity.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace PortfolioWebsite.Controllers
 {
@@ -38,6 +39,7 @@ namespace PortfolioWebsite.Controllers
             }
             else
             {
+                // Generic error message
                 TempData["message"] = "You need to log in to Upload photos!";
                 ViewBag.Message = TempData["message"];
                 return View();
@@ -65,12 +67,9 @@ namespace PortfolioWebsite.Controllers
 
             // Gets current user
             PhotolioUser user = await _userManager.GetUserAsync(User);
-            if (user != null)
+            if (user == null)
             {
-                string userId = user.Id;
-            }
-            else
-            {
+                // Generic error message
                 TempData["message"] = "You need to log in to Upload photos!";
                 ViewBag.Message = TempData["message"];
                 return View();
@@ -79,14 +78,15 @@ namespace PortfolioWebsite.Controllers
             // For each file posted on the Upload page
             foreach (IFormFile postedFile in postedFiles)
             {
+                string userId = user.Id;
                 // Creates the name of the current file
                 string fileName = Path.GetFileName(postedFile.FileName);
 
-                // Add the file to the database as a path, AND to the user's UploadedPhotos list
-                // This also puts the current user's PhotolioUserId into the photo object
+                // Add the file to the database
                 Photo photo = new Photo();
                 photo.PhotoPath = fileName;
-                user.UploadedPhotos.Add(photo);
+                photo.UserId = userId;
+                _context.Add(photo);
                 await _context.SaveChangesAsync();
 
                 // Add the file to the image folder and return a success message
@@ -101,9 +101,54 @@ namespace PortfolioWebsite.Controllers
             return View();
         }
 
-        public IActionResult ViewPhotos()
+        [HttpGet]
+        public async Task<IActionResult> ViewPhotos(ViewPhotosViewModel model)
         {
-            return View();
+            // Creates a new view model to pass to the View Photos page
+            ViewPhotosViewModel vpvm = new ViewPhotosViewModel();
+
+            // Gets current user and their userId
+            PhotolioUser user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                string userId = user.Id;
+
+                // Retrieves all photos from database and sends them 
+                // to a list for processing
+                List<Photo> photos = _context.Photos.ToList();
+
+                // Creates a temporary list to keep track of photo 
+                // paths that should be displayed in View Photos, 
+                // is converted to an array later in the code
+                List<Photo> list = new List<Photo>();
+
+                // Checks the userId of the currently logged in 
+                // user, and compares it to the userId of each 
+                // photo object to check which photos belong to 
+                // the user
+                foreach (Photo photo in photos)
+                {
+                    if (userId == photo.UserId)
+                    {
+                        // Adds the photo to the list to be sent to the 
+                        // View Photos page
+                        list.Add(photo);
+                    }
+                }
+
+                // Sends the list to the view model
+                vpvm.Photos = list;
+
+                // Sends the view model to the View Photos page
+                return View(vpvm);
+            }
+            else
+            {
+                // Generic error message
+                TempData["message"] = "You need to log in to View photos!";
+                ViewBag.Message = TempData["message"];
+                return View();
+            }
         }
 
         public IActionResult Delete()

@@ -236,12 +236,11 @@ namespace PortfolioWebsite.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhotolioUserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PhotoId");
-
-                    b.HasIndex("PhotolioUserId");
 
                     b.ToTable("Photos");
                 });
@@ -295,18 +294,6 @@ namespace PortfolioWebsite.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("PortfolioWebsite.Models.Photo", b =>
-                {
-                    b.HasOne("PortfolioWebsite.Areas.Identity.Data.PhotolioUser", null)
-                        .WithMany("UploadedPhotos")
-                        .HasForeignKey("PhotolioUserId");
-                });
-
-            modelBuilder.Entity("PortfolioWebsite.Areas.Identity.Data.PhotolioUser", b =>
-                {
-                    b.Navigation("UploadedPhotos");
                 });
 #pragma warning restore 612, 618
         }

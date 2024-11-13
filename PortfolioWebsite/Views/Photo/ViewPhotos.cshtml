@@ -1,4 +1,4 @@
-﻿@model PortfolioWebsite.Models.Photo
+﻿@model PortfolioWebsite.Models.ViewPhotosViewModel
 
 @{
     ViewData["Title"] = "View Photos";
@@ -9,27 +9,26 @@
 </head>
 <body>
     <div>
-        <!-- For each photo path stored under the currently 
-            logged in user, create a new <img> to display 
-            each photo path. For now the following code will 
-            display all photos stored in the wwwroot folder 
-            until user-based selection has been implemented. -->
         @{
-            // Gets all files from the images folder
-            string[] fileEntries = Directory.GetFiles("wwwroot/images/");
-            
-            // Does the following actions for each image/file in the folder
-            foreach (string fileName in fileEntries)
+            // If the user has no photos uploaded, display this
+            if (@Model?.Photos == null)
             {
-                // Removes the "wwwroot" at the start of each fileName so 
-                // the image can be properly linked in "src", could be 
-                // a bit more efficient but works for now
-                string correctName;
-                correctName = fileName.Remove(0, 7);
+                <p>No photos to display!</p>
+            }
+            else
+            {
+                // For every photo the user has uploaded
+                foreach (Photo photo in @Model?.Photos)
+                {
+                    // Creates a temporary string and puts "/images/" 
+                    // at the start of each PhotoPath to properly be
+                    // displayed when put into the page
+                    string temp = "/images/" + photo.PhotoPath;
 
-                // Creates an <img> tag to display an image, might be changed 
-                // later to create an organized look without distorting the images
-                <img src="@correctName" alt="" width="200" height="200">
+                    // Creates an <img> tag to display an image, might be changed
+                    // later to create an organized look without distorting the images
+                    <img src="@temp" alt="" width="200" height="200">
+                }
             }
         }
     </div>

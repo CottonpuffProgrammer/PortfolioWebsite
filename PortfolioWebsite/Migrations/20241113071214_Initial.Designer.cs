@@ -12,8 +12,8 @@ using Photolio.Data;
 namespace PortfolioWebsite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241112034423_AdedUserListPart2")]
-    partial class AdedUserListPart2
+    [Migration("20241113071214_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -239,12 +239,11 @@ namespace PortfolioWebsite.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhotolioUserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PhotoId");
-
-                    b.HasIndex("PhotolioUserId");
 
                     b.ToTable("Photos");
                 });
@@ -298,18 +297,6 @@ namespace PortfolioWebsite.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("PortfolioWebsite.Models.Photo", b =>
-                {
-                    b.HasOne("PortfolioWebsite.Areas.Identity.Data.PhotolioUser", null)
-                        .WithMany("UploadedPhotos")
-                        .HasForeignKey("PhotolioUserId");
-                });
-
-            modelBuilder.Entity("PortfolioWebsite.Areas.Identity.Data.PhotolioUser", b =>
-                {
-                    b.Navigation("UploadedPhotos");
                 });
 #pragma warning restore 612, 618
         }
