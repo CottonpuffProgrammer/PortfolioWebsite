@@ -1,8 +1,24 @@
 ﻿@model PortfolioWebsite.Models.Photo
 
 @{
-    ViewData["Title"] = "Delete Photos";
+    ViewData["Title"] = "Delete " + Model.PhotoPath;
 }
 
-<h1>Work in progress!</h1>
+<h1>Are you sure you want to delete @Html.DisplayFor(model => model.PhotoPath)?</h1>
+<div>
+    @{
+        // Creates a temporary string and puts "/images/"
+        // at the start of the PhotoPath to properly be
+        // displayed when put into the page
+        string temp = "/images/" + Model.PhotoPath;
 
+        // Creates an <img> tag to display an image, might be changed
+        // later to create an organized look without distorting the images
+        <img src="@temp" alt="" width="200" height="200">
+    }
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="PhotoId" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+    </form>
+</div>

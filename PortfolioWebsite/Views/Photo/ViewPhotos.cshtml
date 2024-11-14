@@ -28,6 +28,10 @@
                     // Creates an <img> tag to display an image, might be changed
                     // later to create an organized look without distorting the images
                     <img src="@temp" alt="" width="200" height="200">
+
+                    // Delete button will need to be styled so that it goes underneath
+                    // each image, rather than awkwardly to the side of them
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@photo.PhotoId">Delete</a>
                 }
             }
         }

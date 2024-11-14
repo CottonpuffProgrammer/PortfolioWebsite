@@ -50,8 +50,8 @@ namespace PortfolioWebsite.Controllers
         public async Task<IActionResult> Upload(List<IFormFile> postedFiles)
         {
             // Gets the necessary paths to add the files to the specified folder
-            string wwwPath = this._environment.WebRootPath;
-            string contentPath = this._environment.ContentRootPath;
+            //string wwwPath = this._environment.WebRootPath;
+            //string contentPath = this._environment.ContentRootPath;
 
             // Creates a path to the images folder in wwwroot
             string path = Path.Combine(this._environment.WebRootPath, "images");
@@ -79,6 +79,7 @@ namespace PortfolioWebsite.Controllers
             foreach (IFormFile postedFile in postedFiles)
             {
                 string userId = user.Id;
+
                 // Creates the name of the current file
                 string fileName = Path.GetFileName(postedFile.FileName);
 
@@ -151,9 +152,47 @@ namespace PortfolioWebsite.Controllers
             }
         }
 
-        public IActionResult Delete()
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
         {
-            return View();
+            // Gets the photo to delete by its PhotoId
+            Photo? photoToDelete = await _context.Photos.FindAsync(id);
+
+            // If null return an error
+            if (photoToDelete == null)
+            {
+                return NotFound();
+            }
+
+            return View(photoToDelete);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmation(int id)
+        {
+            // Gets the photo to delete by its PhotoId
+            Photo? photoToDelete = await _context.Photos.FindAsync(id);
+
+            // If there is a photo to delete
+            if (photoToDelete != null)
+            {
+                // Removes the photo from the database
+                _context.Photos.Remove(photoToDelete);
+                await _context.SaveChangesAsync();
+
+                // Creates a path to the wwwroot folder and then the current photo
+                string path = Path.Combine(this._environment.WebRootPath, "images");
+                string truePath = path + "/" + photoToDelete.PhotoPath;
+
+                // Removes the photo from the wwwroot folder
+                System.IO.File.Delete(truePath);
+
+                TempData["Message"] = photoToDelete.PhotoPath + " was deleted successfully!";
+                return RedirectToAction("ViewPhotos");
+            }
+
+            TempData["Message"] = "This was already deleted!";
+            return RedirectToAction("ViewPhotos");
         }
     }
 }
