@@ -3,11 +3,12 @@ using PortfolioWebsite.Models;
 using Microsoft.AspNetCore.Identity;
 using Photolio.Data;
 using PortfolioWebsite.Areas.Identity.Data;
+using PortfolioWebsite.Migrations;
 
 var builder = WebApplication.CreateBuilder(args);
-//var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
+// var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("DefaultConnection"));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Server = tcp:portfoliowebsitedbserver.database.windows.net, 1433; Initial Catalog = PortfolioWebsite_db; Persist Security Info=False; User ID = Adminofstration; Password = BruhChonkBronco7392; MultipleActiveResultSets = False; Encrypt = True; TrustServerCertificate = False; Connection Timeout = 30;"));
 
 builder.Services.AddDefaultIdentity<PhotolioUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
 
