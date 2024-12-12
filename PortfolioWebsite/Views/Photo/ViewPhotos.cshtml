@@ -8,7 +8,7 @@
     <h1>Your photos:</h1>
 </head>
 <body>
-    <div>
+    <div class="row">
         @{
             // If the user has no photos uploaded, display this
             if (@Model?.Photos == null)
@@ -27,11 +27,16 @@
 
                     // Creates an <img> tag to display an image, might be changed
                     // later to create an organized look without distorting the images
-                    <img src="@temp" alt="" width="200" height="200">
 
                     // Delete button will need to be styled so that it goes underneath
                     // each image, rather than awkwardly to the side of them
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@photo.PhotoId">Delete</a>
+                    <div class="card" style="width: auto; height: auto">
+                        <img class="card-img-top" src="@temp" alt="" width="200" height="200">
+                        <div class="card-body">
+                            <h5 class="card-title">@photo.PhotoPath</h5>
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@photo.PhotoId">Delete</a>
+                        </div>
+                    </div>
                 }
             }
         }
